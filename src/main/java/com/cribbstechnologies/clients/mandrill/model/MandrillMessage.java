@@ -14,6 +14,7 @@ public class MandrillMessage {
 	private boolean track_clicks=false;
 	private boolean auto_text=false;
 	private boolean url_strip_qs=false;
+	private boolean preserve_recipients=false;
 	private String[] tags = new String[0];
 	private String[] google_analytics_domains = new String[0];
 	private String[] google_analytics_campaign = new String[0];
@@ -133,4 +134,12 @@ public class MandrillMessage {
     public void setGlobal_merge_vars(List<MergeVar> global_merge_vars) {
         this.global_merge_vars = global_merge_vars;
     }
+
+	public boolean isPreserve_recipients() {
+		return preserve_recipients;
+	}
+
+	public void setPreserve_recipients(boolean preserve_recipients) {
+		this.preserve_recipients = preserve_recipients;
+	}
 }
