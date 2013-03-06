@@ -10,6 +10,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -42,13 +44,13 @@ public class MandrillRESTRequest {
 			request.setKey(config.getApiKey());
 			HttpPost postRequest = new HttpPost(config.getServiceUrl() + serviceMethod);
 			String postData = getPostData(request);
-			StringEntity input = new StringEntity(postData);
-			input.setContentType("application/json");
+			StringEntity input = new StringEntity(postData,"UTF-8");
+			input.setContentType("application/json; charset=UTF-8");
+			input.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,"application/json; charset=UTF-8"));
 			postRequest.setEntity(input);
 			
 			HttpResponse response = httpClient.execute(postRequest);
-			 
-			
+			 			
 			BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
 	 
 			StringBuffer sb = new StringBuffer();
