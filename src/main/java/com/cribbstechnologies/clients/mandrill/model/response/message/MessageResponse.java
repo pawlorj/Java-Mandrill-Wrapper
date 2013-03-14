@@ -6,6 +6,7 @@ public class MessageResponse extends BaseMandrillResponse {
 
 	String email; 
 	String status;
+	String _id;
 
 	public String getEmail() {
 		return email;
@@ -22,4 +23,12 @@ public class MessageResponse extends BaseMandrillResponse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
+	}	
 }
