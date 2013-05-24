@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillHtmlMessage;
@@ -283,12 +284,16 @@ public class MandrillRESTRequestTest {
 			fail("Exception not thrown");
 		} catch (RequestFailedException e) {
 			assertEquals("Malformed url", e.getMessage());
+		} catch (InvalidResponseException e) {
+			assertEquals("Malformed url", e.getMessage());
 		}
 		
 		doThrow(new IOException("Mockito!")).when(client).execute(isA(HttpPost.class));
 		try {
 			request.postRequest(emptyBaseRequest, "test", null);
 			fail("Exception not thrown");
+		} catch (InvalidResponseException e) {
+			assertEquals("Malformed url", e.getMessage());
 		} catch (RequestFailedException e) {
 			assertEquals("IOException", e.getMessage());
 		}
@@ -307,12 +312,16 @@ public class MandrillRESTRequestTest {
 			fail("Exception not thrown");
 		} catch (RequestFailedException e) {
 			assertEquals("Json Generation Exception", e.getMessage());
+		} catch (InvalidResponseException e) {
+			assertEquals("Json Generation Exception", e.getMessage());
 		}
 		
 		doThrow(new JsonMappingException("Mockito!")).when(mapper).writeValueAsString(isA(BaseMandrillRequest.class));
 		try {
 			request.postRequest(emptyBaseRequest, "test", null);
 			fail("Exception not thrown");
+		} catch (InvalidResponseException e) {
+			assertEquals("Json Mapping Exception", e.getMessage());
 		} catch (RequestFailedException e) {
 			assertEquals("Json Mapping Exception", e.getMessage());
 		}
@@ -336,6 +345,8 @@ public class MandrillRESTRequestTest {
 			Mockito.when(statusLine.getStatusCode()).thenReturn(500);
 			
 			request.postRequest(emptyBaseRequest, "Foo", null);
+		} catch (InvalidResponseException e) {
+			assertEquals("Failed : HTTP error code : 500 INPUT", e.getMessage());
 		} catch (RequestFailedException rfe) {
 			assertEquals("Failed : HTTP error code : 500 INPUT", rfe.getMessage());
 		} catch (ClientProtocolException e) {

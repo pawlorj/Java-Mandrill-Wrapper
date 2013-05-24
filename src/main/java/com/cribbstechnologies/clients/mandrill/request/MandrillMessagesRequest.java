@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.type.TypeReference;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.MandrillMessageRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillTemplatedMessageRequest;
@@ -25,15 +26,15 @@ public class MandrillMessagesRequest {
 	/**
 	 * Send a new transactional message through Mandrill
 	 * @param messageRequest a populated @see com.cribstechnologies.clients.mandrill.model.MandrillMessageRequest
-	 * @throws RequestFailedException
+	 * @throws RequestFailedException, InvalidResponseException
 	 */
-	public SendMessageResponse sendMessage(MandrillMessageRequest messageRequest) throws RequestFailedException {
+	public SendMessageResponse sendMessage(MandrillMessageRequest messageRequest) throws RequestFailedException, InvalidResponseException {
 		SendMessageResponse response = new SendMessageResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<MessageResponse>) request.postRequest(messageRequest, ServiceMethods.Messages.SEND, SendMessageResponse.class, messageResponseListReference)).getList());
 		return response;
 	}
 	
-	public SendMessageResponse sendTemplatedMessage(MandrillTemplatedMessageRequest templateMessage) throws RequestFailedException {
+	public SendMessageResponse sendTemplatedMessage(MandrillTemplatedMessageRequest templateMessage) throws RequestFailedException, InvalidResponseException {
 		SendMessageResponse response = new SendMessageResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<MessageResponse>) request.postRequest(templateMessage, ServiceMethods.Messages.SEND_TEMPLATE, SendMessageResponse.class, messageResponseListReference)).getList());
 		return response;

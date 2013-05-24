@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithDomain;
@@ -36,7 +37,7 @@ public class MandrillUsersRequestTest {
 	}
 	
 	@Test
-	public void testGetInfo() throws RequestFailedException {
+	public void testGetInfo() throws RequestFailedException, InvalidResponseException {
 		usersRequest.setRequest(request);
 		
 		UsersInfoResponse response = new UsersInfoResponse();
@@ -49,7 +50,7 @@ public class MandrillUsersRequestTest {
 	}
 	
 	@Test
-	public void testPerformPing() throws RequestFailedException {
+	public void testPerformPing() throws RequestFailedException, InvalidResponseException {
 		usersRequest.setRequest(request);
 		
 		BaseMandrillStringResponse response = new BaseMandrillStringResponse();
@@ -60,7 +61,7 @@ public class MandrillUsersRequestTest {
 	}
 	
 	@Test
-	public void testGetSenders() throws RequestFailedException {
+	public void testGetSenders() throws RequestFailedException, InvalidResponseException {
 		usersRequest.setRequest(request);
 		UsersSendersResponse response = new UsersSendersResponse();
 		
@@ -72,7 +73,7 @@ public class MandrillUsersRequestTest {
 	}
 	
 	@Test
-	public void testDisableSender() throws RequestFailedException {
+	public void testDisableSender() throws RequestFailedException, InvalidResponseException {
 		usersRequest.setRequest(request);
 		MandrillRequestWithDomain disableRequest = new MandrillRequestWithDomain();
 		DisableResponse response = new DisableResponse();
@@ -85,7 +86,7 @@ public class MandrillUsersRequestTest {
 	}
 	
 	@Test
-	public void testVerifySender() throws RequestFailedException {
+	public void testVerifySender() throws RequestFailedException, InvalidResponseException {
 		usersRequest.setRequest(request);
 		MandrillRequestWithEmail verifyRequest = new MandrillRequestWithEmail();
 		VerifyResponse response = new VerifyResponse();

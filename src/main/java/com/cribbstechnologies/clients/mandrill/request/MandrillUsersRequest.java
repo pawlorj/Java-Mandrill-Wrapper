@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.type.TypeReference;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithDomain;
@@ -35,7 +36,7 @@ public class MandrillUsersRequest {
 	 * @param infoRequest a populated @see com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest
 	 * @throws RequestFailedException
 	 */
-	public UsersInfoResponse getInfo(BaseMandrillRequest infoRequest) throws RequestFailedException {
+	public UsersInfoResponse getInfo(BaseMandrillRequest infoRequest) throws RequestFailedException, InvalidResponseException {
 		BaseMandrillResponse response = request.postRequest(infoRequest, ServiceMethods.Users.INFO, UsersInfoResponse.class);
 		return (UsersInfoResponse) response;
 	}
@@ -45,7 +46,7 @@ public class MandrillUsersRequest {
 	 * @param pingRequest a populated @see com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest
 	 * @throws RequestFailedException
 	 */
-	public BaseMandrillStringResponse performPing(BaseMandrillRequest pingRequest) throws RequestFailedException {
+	public BaseMandrillStringResponse performPing(BaseMandrillRequest pingRequest) throws RequestFailedException, InvalidResponseException {
 		BaseMandrillStringResponse response = (BaseMandrillStringResponse) request.postRequest(pingRequest, ServiceMethods.Users.PING, null);
 		return response;
 	}
@@ -55,7 +56,7 @@ public class MandrillUsersRequest {
 	 * @param sendersRequest a populated @see com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest
 	 * @throws RequestFailedException
 	 */
-	public UsersSendersResponse getSenders(BaseMandrillRequest sendersRequest) throws RequestFailedException {
+	public UsersSendersResponse getSenders(BaseMandrillRequest sendersRequest) throws RequestFailedException, InvalidResponseException {
 		UsersSendersResponse response = new UsersSendersResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<MandrillSender>) request.postRequest(sendersRequest, ServiceMethods.Users.SENDERS, UsersSendersResponse.class, usersListReference)).getList());
 		return response;
@@ -66,7 +67,7 @@ public class MandrillUsersRequest {
 	 * @param disableRequest a populated @see com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithEmail
 	 * @throws RequestFailedException
 	 */
-	public DisableResponse disableSender(MandrillRequestWithDomain disableRequest) throws RequestFailedException {
+	public DisableResponse disableSender(MandrillRequestWithDomain disableRequest) throws RequestFailedException, InvalidResponseException {
 		return (DisableResponse) request.postRequest(disableRequest, ServiceMethods.Users.DISABLE_SENDER, DisableResponse.class);
 	}
 	
@@ -75,7 +76,7 @@ public class MandrillUsersRequest {
 	 * @param verifyRequest a populated @see com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithEmail
 	 * @throws RequestFailedException
 	 */
-	public VerifyResponse verifySender(MandrillRequestWithEmail verifyRequest) throws RequestFailedException {
+	public VerifyResponse verifySender(MandrillRequestWithEmail verifyRequest) throws RequestFailedException, InvalidResponseException {
 		return (VerifyResponse)request.postRequest(verifyRequest, ServiceMethods.Users.VERIFY_SENDER, VerifyResponse.class);
 	}
 

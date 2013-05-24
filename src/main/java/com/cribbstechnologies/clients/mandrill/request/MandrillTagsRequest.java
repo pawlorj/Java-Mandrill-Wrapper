@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.type.TypeReference;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithTag;
@@ -21,19 +22,19 @@ public class MandrillTagsRequest {
 	TypeReference<List<TagWithTime>> timeTagReference = new TypeReference<List<TagWithTime>>(){};
 	TypeReference<List<BaseTag>> nameTagReference = new TypeReference<List<BaseTag>>(){};
 
-	public TagListResponse getList(BaseMandrillRequest tagsRequest) throws RequestFailedException {
+	public TagListResponse getList(BaseMandrillRequest tagsRequest) throws RequestFailedException, InvalidResponseException {
 		TagListResponse response = new TagListResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<BaseTag>) request.postRequest(tagsRequest, ServiceMethods.Tags.LIST, TagListResponse.class, nameTagReference)).getList());
 		return response;
 	}
 	
-	public TagSeriesResponse getTimeSeries(MandrillRequestWithTag tagsRequest) throws RequestFailedException {
+	public TagSeriesResponse getTimeSeries(MandrillRequestWithTag tagsRequest) throws RequestFailedException, InvalidResponseException {
 		TagSeriesResponse response = new TagSeriesResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<TagWithTime>)request.postRequest(tagsRequest, ServiceMethods.Tags.TIME_SERIES, TagSeriesResponse.class, timeTagReference)).getList());
 		return response;
 	}
 	
-	public TagSeriesResponse getAllTimeSeries(BaseMandrillRequest tagsRequest) throws RequestFailedException {
+	public TagSeriesResponse getAllTimeSeries(BaseMandrillRequest tagsRequest) throws RequestFailedException, InvalidResponseException {
 		TagSeriesResponse response = new TagSeriesResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<TagWithTime>)request.postRequest(tagsRequest, ServiceMethods.Tags.ALL_TIME_SERIES, TagSeriesResponse.class, timeTagReference)).getList());
 		return response;

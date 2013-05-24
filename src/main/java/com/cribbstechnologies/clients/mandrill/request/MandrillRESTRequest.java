@@ -18,6 +18,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.response.BaseMandrillAnonymousListResponse;
@@ -31,15 +32,16 @@ public class MandrillRESTRequest {
 	private HttpClient httpClient;
 	private ObjectMapper objectMapper;
 	
-	public BaseMandrillResponse postRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass) throws RequestFailedException {
+	public BaseMandrillResponse postRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass) throws RequestFailedException, InvalidResponseException {
 		return performPostRequest(request, serviceMethod, responseClass, null);
 	}
 	
-	public BaseMandrillResponse postRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass, TypeReference reference) throws RequestFailedException {
+	public BaseMandrillResponse postRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass, TypeReference reference) throws RequestFailedException,InvalidResponseException {
 		return performPostRequest(request, serviceMethod, responseClass, reference);
 	}
 	
-	private BaseMandrillResponse performPostRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass, TypeReference reference) throws RequestFailedException {
+	private BaseMandrillResponse performPostRequest(BaseMandrillRequest request, String serviceMethod, Object responseClass, TypeReference reference) 
+			throws RequestFailedException, InvalidResponseException {
 		try {
 			request.setKey(config.getApiKey());
 			HttpPost postRequest = new HttpPost(config.getServiceUrl() + serviceMethod);
@@ -70,11 +72,15 @@ public class MandrillRESTRequest {
 			if (responseString.indexOf("PONG!") > -1) {
 				return new BaseMandrillStringResponse(responseString);
 			}
-			
-			if (reference == null) {
-				return convertResponseData(responseString, responseClass);
-			} else {
-				return convertAnonymousListResponseData(responseString, responseClass, reference);
+
+			try {
+				if (reference == null) {
+					return convertResponseData(responseString, responseClass);
+				} else {
+					return convertAnonymousListResponseData(responseString, responseClass, reference);
+				}
+			} catch (JsonMappingException jme) {
+				throw new InvalidResponseException("Json Mapping Exception", jme);
 			}
 		} catch (MalformedURLException mURLE) {
 			throw new RequestFailedException("Malformed url", mURLE);

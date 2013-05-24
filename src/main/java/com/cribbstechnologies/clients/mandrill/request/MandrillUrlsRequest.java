@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.type.TypeReference;
 
+import com.cribbstechnologies.clients.mandrill.exception.InvalidResponseException;
 import com.cribbstechnologies.clients.mandrill.exception.RequestFailedException;
 import com.cribbstechnologies.clients.mandrill.model.BaseMandrillRequest;
 import com.cribbstechnologies.clients.mandrill.model.MandrillRequestWithQuery;
@@ -19,19 +20,19 @@ public class MandrillUrlsRequest {
 	
 	TypeReference<List<UrlResponse>> urlsListReference = new TypeReference<List<UrlResponse>>(){};
 	
-	public UrlListResponse getList(BaseMandrillRequest listRequest) throws RequestFailedException {
+	public UrlListResponse getList(BaseMandrillRequest listRequest) throws RequestFailedException, InvalidResponseException {
 		UrlListResponse response = new UrlListResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<UrlResponse>)request.postRequest(listRequest, ServiceMethods.Urls.LIST, UrlListResponse.class, urlsListReference)).getList());
 		return response;
 	}
 	
-	public UrlListResponse doSearch(MandrillRequestWithQuery searchRequest) throws RequestFailedException {
+	public UrlListResponse doSearch(MandrillRequestWithQuery searchRequest) throws RequestFailedException, InvalidResponseException {
 		UrlListResponse response = new UrlListResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<UrlResponse>)request.postRequest(searchRequest, ServiceMethods.Urls.SEARCH, UrlListResponse.class, urlsListReference)).getList());
 		return response;
 	}
 	
-	public UrlListResponse getTimeSeries(MandrillRequestWithUrl seriesRequest) throws RequestFailedException {
+	public UrlListResponse getTimeSeries(MandrillRequestWithUrl seriesRequest) throws RequestFailedException, InvalidResponseException {
 		UrlListResponse response = new UrlListResponse();
 		response.setList(((BaseMandrillAnonymousListResponse<UrlResponse>)request.postRequest(seriesRequest, ServiceMethods.Urls.TIME_SERIES, UrlListResponse.class, urlsListReference)).getList());
 		return response;
